@@ -2,11 +2,9 @@
 <html>
     <body>
         <script>
-            let url = URL.parse(new URL(document.URL)).searchParams.get("link")
-            if (url != null && (url = URL.parse(decodeURI(url))) != null) {
-                fetch(new URL((url.href.endsWith("/") ? url.href.slice(0, url.href.length - 1) : url.toString()) + "/links"), {"method": "HEAD"}).then(
-                    () => console.log("skibidi")
-                )
+            let url = new URL(document.URL)
+            if ((url = URL.parse(url.searchParams.get("link")))) {
+                fetch(new URL(decodeURI(url)), {"method": "HEAD"})
             }
         </script>
     </body>
