@@ -1,0 +1,26 @@
+import httpx
+import flask
+import concurrent.futures as futures
+import urllib.parse
+import time
+
+app = flask.Flask(__name__)
+executor = futures.ThreadPoolExecutor()
+pages = "https://stkovf.github.io/link.html"
+
+@app.route("<link:path>", methods=["GET", "POST", "HEAD"])
+def main(link=""):
+    if link == "link" and flask.request.methods == "HEAD":
+        return "alive!"
+    req = httpx.request(flask.request.method, f"https://api.anthropic.com/v1/messages/{link[1:] if link.startswith("/") else link}", data=flask.request.get_data(), headers=flask.request.headers)
+    resp = flask.make_response()
+    resp.set_data(req.content)
+    resp.status = req.status_code
+    return resp
+def forever():
+    while True:
+        httpx.get(urllib.parse(flask.url_for("h")).hostname)
+        time.sleep(10)
+def setup():
+    executor.submit(__import__("functools").partial(app.run, "127.0.0.1", 8080)).add_done_callback(lambda: executor.submit(forever))
+setup()
