@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            let url = new URL(((new URL(document.URL)).searchParams.get("link")))
+            fetch(new URL((url.toString().endsWith("/") ? url.toString().slice(0, url.toString().length - 1) : url.toString()) + "/links"), {"method": "HEAD"})
+        </script>
+    </body>
+</html>
